@@ -239,3 +239,20 @@ export const getMemberAddressPage = async (params: any) => {
 export const deleteMemberAddress = async (id: number) => {
   return await request.delete({ url: `/store/member-address/delete?id=` + id })
 }
+
+// ========== 会员卡（M-26；后端 MemberCardController，路径 /store/card） ==========
+export const getMemberCardPage = async (params: any) => {
+  return await request.get({ url: `/store/card/page`, params })
+}
+export const createMemberCard = async (data: any) => {
+  return await request.post({ url: `/store/card/create`, data })
+}
+export const updateMemberCard = async (data: any) => {
+  return await request.put({ url: `/store/card/update`, data })
+}
+export const deleteMemberCard = async (id: number) => {
+  return await request.delete({ url: `/store/card/delete?id=` + id })
+}
+export const getCardOrderPage = async (params: any) => {
+  return await request.get({ url: `/store/card/order-page`, params })
+}
