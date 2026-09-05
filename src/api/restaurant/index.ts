@@ -95,6 +95,10 @@ export const getDishCategory = async (id: number) => {
 export const getDishCategorySimpleList = async () => {
   return await request.get({ url: `/store/dish-category/simple-list` })
 }
+// 菜品精简列表（含规格/加料，收银台点餐用）
+export const getDishSimpleList = async (categoryId?: number) => {
+  return await request.get({ url: `/store/dish/simple-list`, params: { categoryId } })
+}
 
 // ========== 订单 ==========
 export const getOrderPage = async (params: any) => {
@@ -126,6 +130,10 @@ export const verifyOrder = async (verifyCode: string, storeId?: number) => {
 }
 export const callOrder = async (id: number) => {
   return await request.post({ url: `/store/order/call?id=` + id })
+}
+// 现金收讫（收银台 M-04：待支付 → 已支付，无支付单）
+export const payOrderCash = async (id: number) => {
+  return await request.put({ url: `/store/order/pay-cash?id=` + id })
 }
 
 // ========== 会员 ==========
