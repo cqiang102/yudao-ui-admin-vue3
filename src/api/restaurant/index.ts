@@ -231,3 +231,11 @@ export const updateBanner = async (data: any) => {
 export const deleteBanner = async (id: number) => {
   return await request.delete({ url: `/store/banner/delete?id=` + id })
 }
+
+// ========== 会员收货地址（M-23；后端 MemberAddressController，路径 /store/member-address） ==========
+export const getMemberAddressPage = async (params: any) => {
+  return await request.get({ url: `/store/member-address/page`, params })
+}
+export const deleteMemberAddress = async (id: number) => {
+  return await request.delete({ url: `/store/member-address/delete?id=` + id })
+}
