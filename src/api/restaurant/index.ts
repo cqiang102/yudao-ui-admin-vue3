@@ -214,3 +214,20 @@ export const updateStoreStaff = async (data: any) => {
 export const deleteStoreStaff = async (id: number) => {
   return await request.delete({ url: `/store-staff/delete?id=` + id })
 }
+
+// ========== 轮播图（M-29；后端 BannerController，路径 /store/banner） ==========
+export const getBannerPage = async (params: any) => {
+  return await request.get({ url: `/store/banner/page`, params })
+}
+export const getBanner = async (id: number) => {
+  return await request.get({ url: `/store/banner/get?id=` + id })
+}
+export const createBanner = async (data: any) => {
+  return await request.post({ url: `/store/banner/create`, data })
+}
+export const updateBanner = async (data: any) => {
+  return await request.put({ url: `/store/banner/update`, data })
+}
+export const deleteBanner = async (id: number) => {
+  return await request.delete({ url: `/store/banner/delete?id=` + id })
+}
