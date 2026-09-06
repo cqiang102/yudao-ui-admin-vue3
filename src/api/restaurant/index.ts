@@ -136,6 +136,26 @@ export const payOrderCash = async (id: number) => {
   return await request.put({ url: `/store/order/pay-cash?id=` + id })
 }
 
+// ========== 云打印机（M-10 易联云） ==========
+export const getPrinterPage = async (params: any) => {
+  return await request.get({ url: `/store/printer/page`, params })
+}
+export const createPrinter = async (data: any) => {
+  return await request.post({ url: `/store/printer/create`, data })
+}
+export const updatePrinter = async (data: any) => {
+  return await request.put({ url: `/store/printer/update`, data })
+}
+export const deletePrinter = async (id: number) => {
+  return await request.delete({ url: `/store/printer/delete?id=` + id })
+}
+export const getPrintTaskPage = async (params: any) => {
+  return await request.get({ url: `/store/printer/task-page`, params })
+}
+export const retryPrintTask = async (id: number) => {
+  return await request.put({ url: `/store/printer/task/retry?id=` + id })
+}
+
 // ========== 会员 ==========
 export const getMemberPage = async (params: any) => {
   return await request.get({ url: `/store/member/page`, params })
