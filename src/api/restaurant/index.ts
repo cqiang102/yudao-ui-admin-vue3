@@ -156,6 +156,28 @@ export const retryPrintTask = async (id: number) => {
   return await request.put({ url: `/store/printer/task/retry?id=` + id })
 }
 
+// ========== 达达配送（M-11） ==========
+// 获取门店配送配置
+export const getDeliveryConfig = async () => {
+  return await request.get({ url: `/store/delivery/config` })
+}
+// 保存门店配送配置
+export const saveDeliveryConfig = async (data: any) => {
+  return await request.put({ url: `/store/delivery/config`, data })
+}
+// 运单分页（本店）
+export const getDeliveryPage = async (params: any) => {
+  return await request.get({ url: `/store/delivery/page`, params })
+}
+// 发单（外卖订单 → 达达快送）
+export const sendDelivery = async (orderId: number) => {
+  return await request.post({ url: `/store/delivery/send?orderId=` + orderId })
+}
+// 商家取消运单
+export const cancelDelivery = async (orderId: number) => {
+  return await request.put({ url: `/store/delivery/cancel?orderId=` + orderId })
+}
+
 // ========== 会员 ==========
 export const getMemberPage = async (params: any) => {
   return await request.get({ url: `/store/member/page`, params })
