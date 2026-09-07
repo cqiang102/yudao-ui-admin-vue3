@@ -206,6 +206,32 @@ export const getStatisticsDashboard = async () => {
   return await request.get({ url: `/store/statistics/dashboard` })
 }
 
+// ========== 积分商城（M-27） ==========
+// 积分商品分页
+export const getPointProductPage = async (params: any) => {
+  return await request.get({ url: `/store/point-shop/product-page`, params })
+}
+// 创建积分商品
+export const createPointProduct = async (data: any) => {
+  return await request.post({ url: `/store/point-shop/product/create`, data })
+}
+// 更新积分商品
+export const updatePointProduct = async (data: any) => {
+  return await request.put({ url: `/store/point-shop/product/update`, data })
+}
+// 删除积分商品
+export const deletePointProduct = async (id: number) => {
+  return await request.delete({ url: `/store/point-shop/product/delete?id=` + id })
+}
+// 兑换记录分页
+export const getPointOrderPage = async (params: any) => {
+  return await request.get({ url: `/store/point-shop/order-page`, params })
+}
+// 店员核销
+export const verifyPointOrder = async (verifyCode: string) => {
+  return await request.post({ url: `/store/point-shop/verify?verifyCode=` + verifyCode })
+}
+
 // ========== 会员 ==========
 export const getMemberPage = async (params: any) => {
   return await request.get({ url: `/store/member/page`, params })
