@@ -232,6 +232,12 @@ export const verifyPointOrder = async (verifyCode: string) => {
   return await request.post({ url: `/store/point-shop/verify?verifyCode=` + verifyCode })
 }
 
+// ========== 会员标签（M-22） ==========
+// 更新会员标签（tags 为 JSON 数组字符串，空数组清空）
+export const updateMemberTags = async (data: { id: number; tags: string }) => {
+  return await request.put({ url: `/store/member/update-tags`, data })
+}
+
 // ========== 会员 ==========
 export const getMemberPage = async (params: any) => {
   return await request.get({ url: `/store/member/page`, params })
