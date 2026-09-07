@@ -178,6 +178,28 @@ export const cancelDelivery = async (orderId: number) => {
   return await request.put({ url: `/store/delivery/cancel?orderId=` + orderId })
 }
 
+// ========== 微信订阅消息（M-12） ==========
+// 订阅消息模板分页
+export const getNotifyTemplatePage = async (params: any) => {
+  return await request.get({ url: `/store/notify/template-page`, params })
+}
+// 创建订阅消息模板
+export const createNotifyTemplate = async (data: any) => {
+  return await request.post({ url: `/store/notify/template/create`, data })
+}
+// 更新订阅消息模板
+export const updateNotifyTemplate = async (data: any) => {
+  return await request.put({ url: `/store/notify/template/update`, data })
+}
+// 删除订阅消息模板
+export const deleteNotifyTemplate = async (id: number) => {
+  return await request.delete({ url: `/store/notify/template/delete?id=` + id })
+}
+// 发送记录分页
+export const getNotifyRecordPage = async (params: any) => {
+  return await request.get({ url: `/store/notify/record-page`, params })
+}
+
 // ========== 会员 ==========
 export const getMemberPage = async (params: any) => {
   return await request.get({ url: `/store/member/page`, params })
