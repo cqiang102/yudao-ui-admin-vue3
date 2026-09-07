@@ -124,7 +124,7 @@ import { getOrderPage, cancelOrder, acceptOrder, completeOrder, callOrder, verif
 const statusMap = {
   1: '待支付', 2: '已支付', 3: '制作中', 4: '已完成', 5: '已取消', 6: '退款中', 7: '已退款'
 }
-const typeMap = { 1: '堂食', 2: '自取', 3: '外卖' }
+const typeMap = { 1: '堂食', 2: '自取', 3: '外卖', 4: '预约' }
 
 const loading = ref(false)
 const list = ref<any[]>([])
