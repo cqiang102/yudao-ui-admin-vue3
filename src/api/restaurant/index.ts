@@ -200,6 +200,12 @@ export const getNotifyRecordPage = async (params: any) => {
   return await request.get({ url: `/store/notify/record-page`, params })
 }
 
+// ========== 数据看板（M-28） ==========
+// 看板聚合数据（概览 + 趋势 + 类型分布 + 菜品 TOP）
+export const getStatisticsDashboard = async () => {
+  return await request.get({ url: `/store/statistics/dashboard` })
+}
+
 // ========== 会员 ==========
 export const getMemberPage = async (params: any) => {
   return await request.get({ url: `/store/member/page`, params })
