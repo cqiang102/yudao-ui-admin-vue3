@@ -423,3 +423,29 @@ export const getGlobalTrend = async () => {
 export const getGlobalStoreTop = async () => {
   return await request.get({ url: `/platform/statistics/store-top` })
 }
+
+// ========== 财务提现（M-30；后端 WithdrawController，路径 /store/withdraw） ==========
+export const getWithdrawAccountList = async (storeId: number) => {
+  return await request.get({ url: `/store/withdraw/account/list?storeId=` + storeId })
+}
+export const createWithdrawAccount = async (data: any) => {
+  return await request.post({ url: `/store/withdraw/account/create`, data })
+}
+export const updateWithdrawAccount = async (data: any) => {
+  return await request.put({ url: `/store/withdraw/account/update`, data })
+}
+export const deleteWithdrawAccount = async (id: number) => {
+  return await request.delete({ url: `/store/withdraw/account/delete?id=` + id })
+}
+export const applyWithdraw = async (data: any) => {
+  return await request.post({ url: `/store/withdraw/apply`, data })
+}
+export const auditWithdraw = async (data: any) => {
+  return await request.post({ url: `/store/withdraw/audit`, data })
+}
+export const getWithdrawPage = async (params: any) => {
+  return await request.get({ url: `/store/withdraw/page`, params })
+}
+export const getIncomeSummary = async (storeId: number) => {
+  return await request.get({ url: `/store/withdraw/income-summary?storeId=` + storeId })
+}
