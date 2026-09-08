@@ -380,3 +380,21 @@ export const updatePortalMenu = async (data: any) => {
 export const deletePortalMenu = async (id: number) => {
   return await request.delete({ url: `/store/portal-menu/delete?id=` + id })
 }
+
+// ========== 预约规则（M-09；后端 ReserveRuleController，路径 /store/reserve-rule） ==========
+export const getReserveRuleList = async (storeId: number) => {
+  return await request.get({ url: `/store/reserve-rule/list?storeId=` + storeId })
+}
+export const createReserveRule = async (data: any) => {
+  return await request.post({ url: `/store/reserve-rule/create`, data })
+}
+export const updateReserveRule = async (data: any) => {
+  return await request.put({ url: `/store/reserve-rule/update`, data })
+}
+export const deleteReserveRule = async (id: number) => {
+  return await request.delete({ url: `/store/reserve-rule/delete?id=` + id })
+}
+// 预览某天可用时段（含余量）
+export const getReserveSlots = async (storeId: number, date: string) => {
+  return await request.get({ url: `/store/reserve-rule/slots?storeId=` + storeId + `&date=` + date })
+}
