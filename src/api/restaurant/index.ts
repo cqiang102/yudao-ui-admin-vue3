@@ -477,3 +477,28 @@ export const updateHomeDecor = async (data: any) => {
 export const deleteHomeDecor = async (id: number) => {
   return await request.delete({ url: `/store/home-decor/delete?id=` + id })
 }
+
+// ========== 资讯（M-10；后端 NewsController，路径 /store/news） ==========
+export const getNewsList = async (storeId?: number) => {
+  return await request.get({ url: `/store/news/list`, params: { storeId } })
+}
+export const createNews = async (data: any) => {
+  return await request.post({ url: `/store/news/create`, data })
+}
+export const updateNews = async (data: any) => {
+  return await request.put({ url: `/store/news/update`, data })
+}
+export const deleteNews = async (id: number) => {
+  return await request.delete({ url: `/store/news/delete?id=` + id })
+}
+
+// ========== 电子发票（M-35；后端 InvoiceController，路径 /store/invoice） ==========
+export const getInvoiceList = async (params: { storeId?: number; status?: number }) => {
+  return await request.get({ url: `/store/invoice/list`, params })
+}
+export const auditInvoice = async (data: any) => {
+  return await request.put({ url: `/store/invoice/audit`, data })
+}
+export const deleteInvoice = async (id: number) => {
+  return await request.delete({ url: `/store/invoice/delete?id=` + id })
+}
