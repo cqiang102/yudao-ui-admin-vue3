@@ -16,6 +16,9 @@
       <el-form-item label="联系电话" prop="phone">
         <el-input v-model="formData.phone" placeholder="请输入联系电话" />
       </el-form-item>
+      <el-form-item label="客服微信" prop="serviceWechat">
+        <el-input v-model="formData.serviceWechat" placeholder="微信号，小程序端一键复制（可留空）" />
+      </el-form-item>
       <el-form-item label="地址" prop="address">
         <el-input v-model="formData.address" placeholder="请输入地址" />
       </el-form-item>
@@ -81,6 +84,7 @@ const formData = ref({
   name: '',
   contact: '',
   phone: '',
+  serviceWechat: '',
   address: '',
   latitude: undefined,
   longitude: undefined,
@@ -119,6 +123,7 @@ const resetForm = () => {
     name: '',
     contact: '',
     phone: '',
+    serviceWechat: '',
     address: '',
     latitude: undefined,
     longitude: undefined,

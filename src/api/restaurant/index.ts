@@ -398,3 +398,17 @@ export const deleteReserveRule = async (id: number) => {
 export const getReserveSlots = async (storeId: number, date: string) => {
   return await request.get({ url: `/store/reserve-rule/slots?storeId=` + storeId + `&date=` + date })
 }
+
+// ========== 帮助文档（C-12；后端 HelpDocController，路径 /store/help-doc） ==========
+export const getHelpDocList = async (type?: number) => {
+  return await request.get({ url: `/store/help-doc/list`, params: { type } })
+}
+export const createHelpDoc = async (data: any) => {
+  return await request.post({ url: `/store/help-doc/create`, data })
+}
+export const updateHelpDoc = async (data: any) => {
+  return await request.put({ url: `/store/help-doc/update`, data })
+}
+export const deleteHelpDoc = async (id: number) => {
+  return await request.delete({ url: `/store/help-doc/delete?id=` + id })
+}
