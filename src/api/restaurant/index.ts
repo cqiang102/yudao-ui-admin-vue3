@@ -412,3 +412,14 @@ export const updateHelpDoc = async (data: any) => {
 export const deleteHelpDoc = async (id: number) => {
   return await request.delete({ url: `/store/help-doc/delete?id=` + id })
 }
+
+// ========== 全局统计（P-06；后端 GlobalStatisticsController，路径 /platform/statistics） ==========
+export const getGlobalOverview = async () => {
+  return await request.get({ url: `/platform/statistics/overview` })
+}
+export const getGlobalTrend = async () => {
+  return await request.get({ url: `/platform/statistics/trend` })
+}
+export const getGlobalStoreTop = async () => {
+  return await request.get({ url: `/platform/statistics/store-top` })
+}
