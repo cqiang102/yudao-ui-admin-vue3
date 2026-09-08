@@ -19,6 +19,24 @@
       <el-form-item label="地址" prop="address">
         <el-input v-model="formData.address" placeholder="请输入地址" />
       </el-form-item>
+      <el-form-item label="经纬度" prop="latitude">
+        <div class="flex items-center">
+          <el-input
+            v-model="formData.latitude"
+            placeholder="纬度，如 39.908722"
+            style="width: 160px"
+          />
+          <span class="mx-8px">,</span>
+          <el-input
+            v-model="formData.longitude"
+            placeholder="经度，如 116.397499"
+            style="width: 160px"
+          />
+        </div>
+        <div class="text-gray-400 text-12px">
+          用于小程序「附近门店」按距离排序与导航（GCJ-02 坐标，可在腾讯/高德坐标拾取器查询）
+        </div>
+      </el-form-item>
       <el-form-item label="营业开始" prop="businessStart">
         <el-time-picker v-model="formData.businessStart" value-format="HH:mm:ss" placeholder="营业开始时间" />
       </el-form-item>
@@ -64,6 +82,8 @@ const formData = ref({
   contact: '',
   phone: '',
   address: '',
+  latitude: undefined,
+  longitude: undefined,
   businessStart: '',
   businessEnd: '',
   status: 1,
@@ -100,6 +120,8 @@ const resetForm = () => {
     contact: '',
     phone: '',
     address: '',
+    latitude: undefined,
+    longitude: undefined,
     businessStart: '',
     businessEnd: '',
     status: 1,
