@@ -463,3 +463,17 @@ export const updateNotice = async (data: any) => {
 export const deleteNotice = async (id: number) => {
   return await request.delete({ url: `/store/notice/delete?id=` + id })
 }
+
+// ========== 首页装修（M-02；后端 HomeDecorController，路径 /store/home-decor） ==========
+export const getHomeDecorList = async (storeId: number) => {
+  return await request.get({ url: `/store/home-decor/list?storeId=` + storeId })
+}
+export const createHomeDecor = async (data: any) => {
+  return await request.post({ url: `/store/home-decor/create`, data })
+}
+export const updateHomeDecor = async (data: any) => {
+  return await request.put({ url: `/store/home-decor/update`, data })
+}
+export const deleteHomeDecor = async (id: number) => {
+  return await request.delete({ url: `/store/home-decor/delete?id=` + id })
+}
