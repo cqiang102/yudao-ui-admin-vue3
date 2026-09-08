@@ -366,3 +366,17 @@ export const deleteMemberCard = async (id: number) => {
 export const getCardOrderPage = async (params: any) => {
   return await request.get({ url: `/store/card/order-page`, params })
 }
+
+// ========== 我的服务菜单（M-24；后端 PortalMenuController，路径 /store/portal-menu） ==========
+export const getPortalMenuList = async () => {
+  return await request.get({ url: `/store/portal-menu/list` })
+}
+export const createPortalMenu = async (data: any) => {
+  return await request.post({ url: `/store/portal-menu/create`, data })
+}
+export const updatePortalMenu = async (data: any) => {
+  return await request.put({ url: `/store/portal-menu/update`, data })
+}
+export const deletePortalMenu = async (id: number) => {
+  return await request.delete({ url: `/store/portal-menu/delete?id=` + id })
+}
