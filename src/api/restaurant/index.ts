@@ -449,3 +449,17 @@ export const getWithdrawPage = async (params: any) => {
 export const getIncomeSummary = async (storeId: number) => {
   return await request.get({ url: `/store/withdraw/income-summary?storeId=` + storeId })
 }
+
+// ========== 公告（P-07；后端 NoticeController，路径 /store/notice） ==========
+export const getNoticeList = async (storeId?: number) => {
+  return await request.get({ url: `/store/notice/list`, params: { storeId } })
+}
+export const createNotice = async (data: any) => {
+  return await request.post({ url: `/store/notice/create`, data })
+}
+export const updateNotice = async (data: any) => {
+  return await request.put({ url: `/store/notice/update`, data })
+}
+export const deleteNotice = async (id: number) => {
+  return await request.delete({ url: `/store/notice/delete?id=` + id })
+}
