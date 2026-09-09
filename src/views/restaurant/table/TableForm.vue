@@ -37,7 +37,7 @@
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import RestaurantApi from '@/api/restaurant'
+import * as RestaurantApi from '@/api/restaurant'
 
 /** 桌台 表单 */
 defineOptions({ name: 'RestaurantTableForm' })

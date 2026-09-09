@@ -131,7 +131,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { DICT_TYPE } from '@/utils/dict'
 import { formatDate } from '@/utils/formatTime'
 import { ElMessageBox } from 'element-plus'
-import RestaurantApi from '@/api/restaurant'
+import * as RestaurantApi from '@/api/restaurant'
 
 defineOptions({ name: 'RestaurantOrderDetail' })
 

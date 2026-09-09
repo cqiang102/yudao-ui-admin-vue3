@@ -67,7 +67,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-import RestaurantApi from '@/api/restaurant'
+import * as RestaurantApi from '@/api/restaurant'
 
 /** 门店 表单 */
 defineOptions({ name: 'RestaurantStoreForm' })
