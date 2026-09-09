@@ -11,16 +11,20 @@
         <el-input v-model="queryParams.name" class="!w-280px" clearable placeholder="套餐名" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="handleQuery"><Icon icon="ep:search" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" /> 重置</el-button>
+        <el-button type="primary" @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button
+        v-hasPermi="['restaurant:package:create']"
+        type="primary"
+        plain
+        @click="openCreate"
+        >
+        <Icon icon="ep:plus" class="mr-5px" /> 新建套餐
+        </el-button>
       </el-form-item>
     </el-form>
 
-    <el-row :gutter="10" class="mb-4">
-      <el-col :span="1.5">
-        <el-button v-hasPermi="['restaurant:package:create']" type="primary" @click="openCreate"><Icon icon="ep:plus" /> 新建套餐</el-button>
-      </el-col>
-    </el-row>
+    
 
     <PackageForm ref="formRef" @success="getList" />
 

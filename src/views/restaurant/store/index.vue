@@ -5,19 +5,25 @@
         <el-input v-model="queryParams.name" class="!w-280px" clearable placeholder="门店名称" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="handleQuery"><Icon icon="ep:search" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" /> 重置</el-button>
+        <el-button type="primary" @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button
+        v-hasPermi="['restaurant:store:create']"
+        type="primary"
+        plain
+        @click="openCreate"
+        >
+        <Icon icon="ep:plus" class="mr-5px" /> 新建门店
+        </el-button>
       </el-form-item>
     </el-form>
+  </ContentWrap>
 
-    <el-row :gutter="10" class="mb-4">
-      <el-col :span="1.5">
-        <el-button v-hasPermi="['restaurant:store:create']" type="primary" @click="openCreate"><Icon icon="ep:plus" /> 新建门店</el-button>
-      </el-col>
-    </el-row>
+  <!-- 表单弹窗：添加 / 修改 -->
+  <StoreForm ref="formRef" @success="getList" />
 
-    <StoreForm ref="formRef" @success="getList" />
-
+  <!-- 列表 -->
+  <ContentWrap>
     <el-table v-loading="loading" :data="list">
       <el-table-column align="center" label="编号" prop="id" min-width="80" />
       <el-table-column align="center" label="门店名称" prop="name" min-width="140" />

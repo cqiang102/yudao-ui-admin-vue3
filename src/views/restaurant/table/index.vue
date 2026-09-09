@@ -7,22 +7,25 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="handleQuery"><Icon icon="ep:search" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" /> 重置</el-button>
+        <el-button type="primary" @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button
+        v-hasPermi="['restaurant:table:create']"
+        type="primary"
+        plain
+        @click="openCreate"
+        >
+        <Icon icon="ep:plus" class="mr-5px" /> 新增桌台
+        </el-button>
       </el-form-item>
     </el-form>
+  </ContentWrap>
 
-    <el-row :gutter="10" class="mb-4">
-      <el-col :span="1.5">
-        <el-button v-hasPermi="['restaurant:table:create']" type="primary" @click="openCreate"><Icon icon="ep:plus" /> 新增桌台</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button v-hasPermi="['restaurant:table:create']" type="success" @click="openGenerate"><Icon icon="ep:magic-stick" /> 批量生成</el-button>
-      </el-col>
-    </el-row>
+  <!-- 表单弹窗：添加 / 修改 -->
+  <TableForm ref="formRef" @success="getList" />
 
-    <TableForm ref="formRef" @success="getList" />
-
+  <!-- 列表 -->
+  <ContentWrap>
     <el-table v-loading="loading" :data="list">
       <el-table-column align="center" label="桌台号" prop="tableNo" min-width="100" />
       <el-table-column align="center" label="座位数" prop="seats" min-width="80" />

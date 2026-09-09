@@ -14,29 +14,33 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="handleQuery">
-          <Icon icon="ep:search" /> 搜索
+          <Icon icon="ep:search" class="mr-5px" /> 搜索
         </el-button>
         <el-button @click="resetQuery">
-          <Icon icon="ep:refresh" /> 重置
+          <Icon icon="ep:refresh" class="mr-5px" /> 重置
+        </el-button>
+        <el-button
+          v-hasPermi="['restaurant:order:create']"
+          type="primary"
+          plain
+          @click="openCreate"
+        >
+          <Icon icon="ep:plus" class="mr-5px" /> 新建订单
+        </el-button>
+        <el-button
+          v-hasPermi="['restaurant:order:verify']"
+          type="warning"
+          plain
+          @click="verifyVisible = true"
+        >
+          <Icon icon="ep:scan" class="mr-5px" /> 扫码核销
         </el-button>
       </el-form-item>
     </el-form>
+  </ContentWrap>
 
-    <!-- 操作工具栏 -->
-    <el-row :gutter="10" class="mb-4">
-      <el-col :span="1.5">
-        <el-button v-hasPermi="['restaurant:order:create']" type="primary" @click="openCreate">
-          <Icon icon="ep:plus" /> 新建订单
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button v-hasPermi="['restaurant:order:verify']" type="warning" @click="verifyVisible = true">
-          <Icon icon="ep:scan" /> 扫码核销
-        </el-button>
-      </el-col>
-    </el-row>
-
-    <!-- 列表 -->
+  <!-- 列表 -->
+  <ContentWrap>
     <el-table v-loading="loading" :data="list">
       <el-table-column align="center" label="订单号" prop="orderNo" min-width="180" />
       <el-table-column align="center" label="门店" prop="storeId" min-width="80" />
@@ -103,17 +107,17 @@
       :total="total"
       @pagination="getList"
     />
-
-    <!-- 扫码核销弹窗 -->
-    <el-dialog v-model="verifyVisible" title="扫码核销" width="420px">
-      <el-alert type="info" :closable="false" class="mb-3" title="输入顾客出示的 6 位核销码（扫码枪扫码即自动填入），核销成功即视为订单完成并释放堂食桌台。" />
-      <el-input v-model="verifyCode" placeholder="请输入核销码" maxlength="8" clearable @keyup.enter="submitVerify" />
-      <template #footer>
-        <el-button @click="verifyVisible = false">取消</el-button>
-        <el-button v-hasPermi="['restaurant:order:verify']" type="primary" @click="submitVerify">确认核销</el-button>
-      </template>
-    </el-dialog>
   </ContentWrap>
+
+  <!-- 扫码核销弹窗 -->
+  <el-dialog v-model="verifyVisible" title="扫码核销" width="420px">
+    <el-alert type="info" :closable="false" class="mb-3" title="输入顾客出示的 6 位核销码（扫码枪扫码即自动填入），核销成功即视为订单完成并释放堂食桌台。" />
+    <el-input v-model="verifyCode" placeholder="请输入核销码" maxlength="8" clearable @keyup.enter="submitVerify" />
+    <template #footer>
+      <el-button @click="verifyVisible = false">取消</el-button>
+      <el-button v-hasPermi="['restaurant:order:verify']" type="primary" @click="submitVerify">确认核销</el-button>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">

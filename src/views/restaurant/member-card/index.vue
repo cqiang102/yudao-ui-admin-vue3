@@ -17,12 +17,13 @@
             <el-button type="primary" @click="getCardList">查询</el-button>
             <el-button @click="resetCardQuery">重置</el-button>
             <el-button
-              v-hasPermi="['restaurant:member-card:create']"
-              type="success"
-              @click="openCreate"
-            >
-              新增会员卡
-            </el-button>
+          v-hasPermi="['restaurant:member-card:create']"
+          type="primary"
+          plain
+          @click="openCreate"
+        >
+          <Icon icon="ep:plus" class="mr-5px" /> 新增会员卡
+        </el-button>
           </el-form-item>
         </el-form>
 

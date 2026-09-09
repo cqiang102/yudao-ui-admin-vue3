@@ -14,7 +14,10 @@
         <el-button @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
+  </ContentWrap>
 
+  <!-- 列表 -->
+  <ContentWrap>
     <el-table v-loading="loading" :data="list" stripe>
       <el-table-column label="地址编号" prop="id" width="90" />
       <el-table-column label="会员编号" prop="userId" width="90" />

@@ -24,15 +24,19 @@
         <el-button type="primary" :disabled="!storeId" @click="getList">查询</el-button>
         <el-button
           v-hasPermi="['restaurant:reserve-rule:create']"
-          type="success"
+          type="primary"
+          plain
           :disabled="!storeId"
           @click="openForm()"
         >
-          新增规则
+          <Icon icon="ep:plus" class="mr-5px" /> 新增规则
         </el-button>
       </el-form-item>
     </el-form>
+  </ContentWrap>
 
+  <!-- 列表 -->
+  <ContentWrap>
     <el-table v-loading="loading" :data="list" stripe>
       <el-table-column label="编号" prop="id" width="70" />
       <el-table-column label="适用星期" width="110">

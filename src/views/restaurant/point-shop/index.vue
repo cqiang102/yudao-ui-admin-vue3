@@ -13,12 +13,13 @@
           <el-form-item>
             <el-button type="primary" @click="getProductList">查询</el-button>
             <el-button
-              v-hasPermi="['restaurant:point-shop:create']"
-              type="success"
-              @click="openForm()"
-            >
-              新增商品
-            </el-button>
+          v-hasPermi="['restaurant:point-shop:create']"
+          type="primary"
+          plain
+          @click="openForm()"
+        >
+          <Icon icon="ep:plus" class="mr-5px" /> 新增商品
+        </el-button>
           </el-form-item>
         </el-form>
 

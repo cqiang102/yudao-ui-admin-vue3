@@ -7,12 +7,13 @@
           <el-form-item>
             <el-button type="primary" @click="getTemplateList">刷新</el-button>
             <el-button
-              v-hasPermi="['restaurant:notify:create']"
-              type="success"
-              @click="openForm()"
-            >
-              新增模板
-            </el-button>
+          v-hasPermi="['restaurant:notify:create']"
+          type="primary"
+          plain
+          @click="openForm()"
+        >
+          <Icon icon="ep:plus" class="mr-5px" /> 新增模板
+        </el-button>
           </el-form-item>
         </el-form>
 

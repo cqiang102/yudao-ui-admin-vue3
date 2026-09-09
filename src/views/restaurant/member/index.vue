@@ -5,11 +5,14 @@
         <el-input v-model="queryParams.id" class="!w-200px" clearable placeholder="会员ID" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="handleQuery"><Icon icon="ep:search" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" /> 重置</el-button>
+        <el-button type="primary" @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
       </el-form-item>
     </el-form>
+  </ContentWrap>
 
+  <!-- 列表 -->
+  <ContentWrap>
     <el-table v-loading="loading" :data="list">
       <el-table-column align="center" label="会员ID" prop="id" min-width="90" />
       <el-table-column align="center" label="用户ID" prop="userId" min-width="90" />

@@ -5,17 +5,22 @@
         <el-input v-model="queryParams.name" class="!w-280px" clearable placeholder="模板名称" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="handleQuery"><Icon icon="ep:search" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" /> 重置</el-button>
+        <el-button type="primary" @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button
+        v-hasPermi="['restaurant:coupon-template:create']"
+        type="primary"
+        plain
+        @click="openCreate"
+        >
+        <Icon icon="ep:plus" class="mr-5px" /> 新建券模板
+        </el-button>
       </el-form-item>
     </el-form>
+  </ContentWrap>
 
-    <el-row :gutter="10" class="mb-4">
-      <el-col :span="1.5">
-        <el-button v-hasPermi="['restaurant:coupon-template:create']" type="primary" @click="openCreate"><Icon icon="ep:plus" /> 新建券模板</el-button>
-      </el-col>
-    </el-row>
-
+  <!-- 列表 -->
+  <ContentWrap>
     <el-table v-loading="loading" :data="list">
       <el-table-column align="center" label="模板名" prop="name" min-width="140" />
       <el-table-column align="center" label="类型" min-width="80">

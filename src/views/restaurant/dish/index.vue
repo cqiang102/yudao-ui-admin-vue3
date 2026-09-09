@@ -5,19 +5,25 @@
         <el-input v-model="queryParams.name" class="!w-280px" clearable placeholder="菜品名称" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="handleQuery"><Icon icon="ep:search" /> 搜索</el-button>
-        <el-button @click="resetQuery"><Icon icon="ep:refresh" /> 重置</el-button>
+        <el-button type="primary" @click="handleQuery"><Icon icon="ep:search" class="mr-5px" /> 搜索</el-button>
+        <el-button @click="resetQuery"><Icon icon="ep:refresh" class="mr-5px" /> 重置</el-button>
+        <el-button
+        v-hasPermi="['restaurant:dish:create']"
+        type="primary"
+        plain
+        @click="openCreate"
+        >
+        <Icon icon="ep:plus" class="mr-5px" /> 新增菜品
+        </el-button>
       </el-form-item>
     </el-form>
+  </ContentWrap>
 
-    <el-row :gutter="10" class="mb-4">
-      <el-col :span="1.5">
-        <el-button v-hasPermi="['restaurant:dish:create']" type="primary" @click="openCreate"><Icon icon="ep:plus" /> 新增菜品</el-button>
-      </el-col>
-    </el-row>
+  <!-- 表单弹窗：添加 / 修改 -->
+  <DishForm ref="formRef" @success="getList" />
 
-    <DishForm ref="formRef" @success="getList" />
-
+  <!-- 列表 -->
+  <ContentWrap>
     <el-table v-loading="loading" :data="list">
       <el-table-column align="center" label="菜品" prop="name" min-width="140" />
       <el-table-column align="center" label="分类" prop="categoryId" min-width="90" />

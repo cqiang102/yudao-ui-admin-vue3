@@ -17,15 +17,19 @@
       <el-form-item>
         <el-button
           v-hasPermi="['restaurant:home-decor:create']"
-          type="success"
+          type="primary"
+          plain
           :disabled="!storeId"
           @click="openForm()"
         >
-          新增条目
+          <Icon icon="ep:plus" class="mr-5px" /> 新增条目
         </el-button>
       </el-form-item>
     </el-form>
+  </ContentWrap>
 
+  <!-- 列表 -->
+  <ContentWrap>
     <el-table v-loading="loading" :data="list" stripe>
       <el-table-column label="编号" prop="id" width="70" />
       <el-table-column label="类型" width="120">

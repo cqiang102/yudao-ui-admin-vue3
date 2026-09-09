@@ -17,7 +17,10 @@
         <el-button type="primary" @click="getList">刷新</el-button>
       </el-form-item>
     </el-form>
+  </ContentWrap>
 
+  <!-- 列表 -->
+  <ContentWrap>
     <el-table v-loading="loading" :data="list" stripe>
       <el-table-column label="编号" prop="id" width="70" />
       <el-table-column label="门店" width="130">

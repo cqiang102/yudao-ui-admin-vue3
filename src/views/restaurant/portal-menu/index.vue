@@ -13,14 +13,18 @@
         <el-button type="primary" @click="getList">刷新</el-button>
         <el-button
           v-hasPermi="['restaurant:portal-menu:create']"
-          type="success"
+          type="primary"
+          plain
           @click="openForm()"
         >
-          新增菜单项
+          <Icon icon="ep:plus" class="mr-5px" /> 新增菜单项
         </el-button>
       </el-form-item>
     </el-form>
+  </ContentWrap>
 
+  <!-- 列表 -->
+  <ContentWrap>
     <el-table v-loading="loading" :data="list" stripe>
       <el-table-column label="编号" prop="id" width="70" />
       <el-table-column label="图标" width="80" align="center">

@@ -13,12 +13,13 @@
           <el-form-item>
             <el-button type="primary" @click="getList">查询</el-button>
             <el-button
-              v-hasPermi="['restaurant:printer:create']"
-              type="success"
-              @click="openForm()"
-            >
-              添加打印机
-            </el-button>
+          v-hasPermi="['restaurant:printer:create']"
+          type="primary"
+          plain
+          @click="openForm()"
+        >
+          <Icon icon="ep:plus" class="mr-5px" /> 添加打印机
+        </el-button>
           </el-form-item>
         </el-form>
 

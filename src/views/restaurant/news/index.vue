@@ -9,12 +9,20 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="getList">刷新</el-button>
-        <el-button v-hasPermi="['restaurant:news:create']" type="success" @click="openForm()">
-          发布资讯
+        <el-button
+          v-hasPermi="['restaurant:news:create']"
+          type="primary"
+          plain
+          @click="openForm()"
+        >
+          <Icon icon="ep:plus" class="mr-5px" /> 发布资讯
         </el-button>
       </el-form-item>
     </el-form>
+  </ContentWrap>
 
+  <!-- 列表 -->
+  <ContentWrap>
     <el-table v-loading="loading" :data="list" stripe>
       <el-table-column label="编号" prop="id" width="70" />
       <el-table-column label="范围" width="130">
