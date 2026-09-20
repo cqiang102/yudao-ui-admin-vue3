@@ -110,6 +110,22 @@
         <el-table-column label="价格(元)" width="100">
           <template #default="scope">{{ (scope.row.price / 100).toFixed(2) }}</template>
         </el-table-column>
+        <el-table-column label="规格/加料" width="220">
+          <template #default="scope">
+            <template v-if="scope.row.specs?.length || scope.row.addons?.length">
+              <el-button link type="primary" @click="openSpec(scope.row)">
+                {{
+                  scope.row._specDesc ||
+                  (scope.row.specs?.length ? '请选择规格（必选）' : '选择加料')
+                }}
+              </el-button>
+              <el-tag v-if="scope.row.addonIds?.length" size="small" class="ml-6px">
+                加料 {{ scope.row.addonIds.length }} 项
+              </el-tag>
+            </template>
+            <span v-else class="opt-none">-</span>
+          </template>
+        </el-table-column>
         <el-table-column label="数量" width="160">
           <template #default="scope">
             <el-input-number v-model="scope.row._qty" :min="0" :max="999" :step="1" />
@@ -121,6 +137,39 @@
         <el-button type="primary" :disabled="selectedItems.length === 0" @click="submitAddItems">
           确认加菜（{{ selectedItems.length }} 项）
         </el-button>
+      </template>
+    </el-dialog>
+
+    <!-- 加菜的规格/加料选择（有规格的必须选：后端 2026-09-20 起校验 2000006030） -->
+    <el-dialog
+      v-model="specVisible"
+      :title="`选择规格/加料：${specDish?.name || ''}`"
+      width="560px"
+      append-to-body
+    >
+      <div v-for="(grp, gi) in specGroups" :key="gi" class="spec-block">
+        <div class="spec-group-name">{{ grp.groupName }}（单选）</div>
+        <el-radio-group v-model="pickedSpecId">
+          <el-radio v-for="s in grp.options" :key="s.id" :value="s.id">
+            {{ s.optionName }}
+            <span class="spec-delta">
+              {{ (s.priceDelta ?? 0) === 0 ? '' : `（+¥${((s.priceDelta ?? 0) / 100).toFixed(2)}）` }}
+            </span>
+          </el-radio>
+        </el-radio-group>
+      </div>
+      <div v-if="specDish?.addons?.length" class="spec-block">
+        <div class="spec-group-name">加料（可多选，按份计费）</div>
+        <el-checkbox-group v-model="pickedAddonIds">
+          <el-checkbox v-for="a in specDish.addons" :key="a.id" :value="a.id">
+            {{ a.optionName }}
+            <span class="spec-delta">（+¥{{ ((a.priceDelta ?? 0) / 100).toFixed(2) }}）</span>
+          </el-checkbox>
+        </el-checkbox-group>
+      </div>
+      <template #footer>
+        <el-button @click="specVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmSpec">确定</el-button>
       </template>
     </el-dialog>
   </ContentWrap>
@@ -200,10 +249,53 @@ const dishLoading = ref(false)
 const dishList = ref<any[]>([])
 const dishQuery = ref({ name: undefined as string | undefined, pageNo: 1, pageSize: 100 })
 
+// 规格/加料选择：有规格的菜品必须选（与后端 2026-09-20 起的口径一致）
+const specVisible = ref(false)
+const specDish = ref<any>(null)
+const pickedSpecId = ref<number | null>(null)
+const pickedAddonIds = ref<number[]>([])
+
+const specGroups = computed(() => {
+  const d = specDish.value
+  if (!d?.specs?.length) return []
+  const map: Record<string, any> = {}
+  d.specs.forEach((s: any) => {
+    if (!map[s.groupName]) map[s.groupName] = { groupName: s.groupName, options: [] }
+    map[s.groupName].options.push(s)
+  })
+  return Object.values(map)
+})
+
+const openSpec = (row: any) => {
+  specDish.value = row
+  pickedSpecId.value = row._specId ?? (row.specs?.length ? row.specs[0].id : null)
+  pickedAddonIds.value = [...(row.addonIds || [])]
+  specVisible.value = true
+}
+
+const confirmSpec = () => {
+  const row = specDish.value
+  if (!row) return
+  if (row.specs?.length && pickedSpecId.value == null) {
+    message.warning('该菜品有规格选项，请先选择规格')
+    return
+  }
+  row._specId = pickedSpecId.value
+  row.addonIds = [...pickedAddonIds.value]
+  const spec = row.specs?.find((s: any) => s.id === row._specId)
+  row._specDesc = spec ? `${spec.groupName}:${spec.optionName}` : ''
+  specVisible.value = false
+}
+
 const selectedItems = computed(() =>
   dishList.value
     .filter((d) => (d._qty || 0) > 0)
-    .map((d) => ({ dishId: d.id, quantity: d._qty, specId: null, addonIds: [] }))
+    .map((d) => ({
+      dishId: d.id,
+      quantity: d._qty,
+      specId: d._specId ?? null,
+      addonIds: d.addonIds || []
+    }))
 )
 
 const resetDishQuery = () => {
@@ -227,6 +319,14 @@ const openAddItems = () => {
 }
 
 const submitAddItems = async () => {
+  const rows = dishList.value.filter((d) => (d._qty || 0) > 0)
+  // 有规格的菜品必须选规格，否则后端会报 2000006030；这里先拦好并直接把选择面板打开
+  const missing = rows.find((d) => d.specs?.length && d._specId == null)
+  if (missing) {
+    message.warning(`「${missing.name}」有规格选项，请先选择规格`)
+    openSpec(missing)
+    return
+  }
   const items = selectedItems.value
   if (!items.length) {
     message.warning('请至少选择一份菜品')
@@ -240,3 +340,21 @@ const submitAddItems = async () => {
 
 onMounted(loadDetail)
 </script>
+
+<style scoped>
+.opt-none {
+  color: var(--el-text-color-placeholder);
+}
+.spec-block {
+  margin-bottom: 14px;
+}
+.spec-group-name {
+  font-size: 13px;
+  color: var(--el-text-color-regular);
+  margin-bottom: 6px;
+}
+.spec-delta {
+  color: var(--el-color-danger);
+  font-size: 12px;
+}
+</style>

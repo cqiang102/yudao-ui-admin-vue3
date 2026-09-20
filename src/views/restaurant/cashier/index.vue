@@ -48,8 +48,16 @@
       </template>
 
       <el-table :data="cart" stripe size="small" max-height="420">
-        <el-table-column label="菜品" prop="name" min-width="120" />
-        <el-table-column label="单价" width="90">
+        <el-table-column label="菜品" prop="name" min-width="110" />
+        <el-table-column label="规格/加料" min-width="150">
+          <template #default="{ row }">
+            <span v-if="row.specDesc || row.addonDesc">
+              {{ [row.specDesc, row.addonDesc].filter(Boolean).join('；') }}
+            </span>
+            <span v-else class="opt-none">-</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="单价" width="80">
           <template #default="{ row }">¥{{ fen2yuan(row.price) }}</template>
         </el-table-column>
         <el-table-column label="数量" width="150">
@@ -97,9 +105,42 @@
         </el-button>
       </div>
       <div class="mvp-note">
-        MVP 边界：规格/加料暂不选择（按原价下单）；单型为「自取」，堂食桌台与微信扫码/余额代收后续版本接入。
+        规格/加料在下单前选择，加料按份计费；单型为「自取」，堂食桌台与微信扫码/余额代收后续版本接入。
       </div>
     </el-card>
+
+    <!-- 规格/加料选择（菜品配了规格或加料时弹出） -->
+    <el-dialog v-model="specVisible" :title="`选择规格/加料：${specDish?.name || ''}`" width="560px">
+      <div v-for="(grp, gi) in specGroups" :key="gi" class="spec-block">
+        <div class="spec-group-name">{{ grp.groupName }}（单选）</div>
+        <el-radio-group v-model="pickedSpecId">
+          <el-radio v-for="s in grp.options" :key="s.id" :value="s.id">
+            {{ s.optionName }}
+            <span class="spec-delta">{{ (s.priceDelta ?? 0) === 0 ? '' : `（${(s.priceDelta ?? 0) > 0 ? '+' : ''}¥${fen2yuan(s.priceDelta)}）` }}</span>
+          </el-radio>
+        </el-radio-group>
+      </div>
+      <div v-if="specDish?.addons?.length" class="spec-block">
+        <div class="spec-group-name">加料（可多选，按份计费）</div>
+        <el-checkbox-group v-model="pickedAddonIds">
+          <el-checkbox v-for="a in specDish.addons" :key="a.id" :value="a.id">
+            {{ a.optionName }}
+            <span class="spec-delta">{{ (a.priceDelta ?? 0) === 0 ? '' : `（+¥${fen2yuan(a.priceDelta)}）` }}</span>
+          </el-checkbox>
+        </el-checkbox-group>
+      </div>
+      <el-empty
+        v-if="!specGroups.length && !specDish?.addons?.length"
+        description="该菜品未配置规格/加料"
+        :image-size="60"
+      />
+      <template #footer>
+        <el-button @click="specVisible = false">取消</el-button>
+        <el-button type="primary" @click="confirmSpec">
+          加入购物车（每份 ¥{{ fen2yuan(specLinePrice) }}）
+        </el-button>
+      </template>
+    </el-dialog>
 
     <!-- 挂单列表 -->
     <el-dialog v-model="pendingVisible" title="挂单列表（取单）" width="560px">
@@ -169,10 +210,15 @@ const loadDishes = async () => {
 
 // ---------- 购物车 ----------
 interface CartItem {
+  key: string // 菜品+规格+加料 组合键：同菜品不同规格分行显示
   dishId: number
   name: string
-  price: number // 分
+  price: number // 每份合计（分）：基础价 + 规格加价 + 加料加价（加料按份计费）
   quantity: number
+  specId: number | null
+  addonIds: number[]
+  specDesc: string
+  addonDesc: string
 }
 const cart = ref<CartItem[]>([])
 const remark = ref('')
@@ -182,12 +228,80 @@ const totalPrice = computed(() =>
   cart.value.reduce((sum, it) => sum + it.price * it.quantity, 0)
 )
 
+// ---------- 规格/加料选择 ----------
+// 后端 2026-09-20 起：有规格的菜品必须选规格，否则下单报 2000006030
+const specVisible = ref(false)
+const specDish = ref<any>(null)
+const pickedSpecId = ref<number | null>(null)
+const pickedAddonIds = ref<number[]>([])
+
+const specGroups = computed(() => {
+  const d = specDish.value
+  if (!d?.specs?.length) return []
+  const map: Record<string, any> = {}
+  d.specs.forEach((s: any) => {
+    if (!map[s.groupName]) map[s.groupName] = { groupName: s.groupName, options: [] }
+    map[s.groupName].options.push(s)
+  })
+  return Object.values(map)
+})
+
+const specLinePrice = computed(() => {
+  const d = specDish.value
+  if (!d) return 0
+  let p = d.price || 0
+  const spec = d.specs?.find((s: any) => s.id === pickedSpecId.value)
+  if (spec) p += spec.priceDelta || 0
+  pickedAddonIds.value.forEach((aid) => {
+    const a = d.addons?.find((x: any) => x.id === aid)
+    if (a) p += a.priceDelta || 0
+  })
+  return p
+})
+
+const openSpec = (dish: any) => {
+  specDish.value = dish
+  pickedSpecId.value = dish.specs?.length ? dish.specs[0].id : null
+  pickedAddonIds.value = []
+  specVisible.value = true
+}
+
+const confirmSpec = () => {
+  if (specGroups.value.length && pickedSpecId.value == null) {
+    message.warning('该菜品有规格选项，请先选择规格')
+    return
+  }
+  pushCart(specDish.value, pickedSpecId.value, [...pickedAddonIds.value])
+  specVisible.value = false
+}
+
 const addToCart = (dish: any) => {
   if (dish.soldOut === 1 || dish.status !== 1) {
     message.warning('该菜品已售罄或下架')
     return
   }
-  const exist = cart.value.find((it) => it.dishId === dish.id)
+  // 配了规格/加料的菜品先弹选择面板（有规格的必须选，与后端口径一致）
+  if (dish.specs?.length || dish.addons?.length) {
+    openSpec(dish)
+    return
+  }
+  pushCart(dish, null, [])
+}
+
+const pushCart = (dish: any, specId: number | null, addonIds: number[]) => {
+  const list = addonIds || []
+  const spec = specId != null ? dish.specs?.find((s: any) => s.id === specId) : null
+  const addonNames = list
+    .map((aid: number) => dish.addons?.find((x: any) => x.id === aid)?.optionName)
+    .filter(Boolean)
+  let price = dish.price || 0
+  if (spec) price += spec.priceDelta || 0
+  price += list.reduce((s: number, aid: number) => {
+    const a = dish.addons?.find((x: any) => x.id === aid)
+    return s + (a?.priceDelta || 0)
+  }, 0)
+  const key = `${dish.id}_${specId ?? ''}_${list.join(',')}`
+  const exist = cart.value.find((it) => it.key === key)
   if (exist) {
     if (exist.quantity >= 999) {
       message.warning('数量已达上限 999')
@@ -195,12 +309,22 @@ const addToCart = (dish: any) => {
     }
     exist.quantity += 1
   } else {
-    cart.value.push({ dishId: dish.id, name: dish.name, price: dish.price, quantity: 1 })
+    cart.value.push({
+      key,
+      dishId: dish.id,
+      name: dish.name,
+      price,
+      quantity: 1,
+      specId: specId ?? null,
+      addonIds: list,
+      specDesc: spec ? `${spec.groupName}:${spec.optionName}` : '',
+      addonDesc: addonNames.length ? `加料:${addonNames.join('、')}` : ''
+    })
   }
 }
 
 const removeFromCart = (row: CartItem) => {
-  cart.value = cart.value.filter((it) => it.dishId !== row.dishId)
+  cart.value = cart.value.filter((it) => it.key !== row.key)
 }
 
 const clearCart = () => {
@@ -263,7 +387,12 @@ const checkout = async () => {
     const orderId = await createOrder({
       type: 2,
       remark: remark.value || undefined,
-      items: cart.value.map((it) => ({ dishId: it.dishId, quantity: it.quantity }))
+      items: cart.value.map((it) => ({
+        dishId: it.dishId,
+        quantity: it.quantity,
+        specId: it.specId,
+        addonIds: it.addonIds
+      }))
     })
     // 2. 现金收讫：待支付 → 已支付（收银员现场收现金）
     await payOrderCash(orderId)
@@ -296,6 +425,21 @@ onMounted(() => {
 .cashier-right {
   width: 420px;
   flex-shrink: 0;
+}
+.opt-none {
+  color: var(--el-text-color-placeholder);
+}
+.spec-block {
+  margin-bottom: 14px;
+}
+.spec-group-name {
+  font-size: 13px;
+  color: var(--el-text-color-regular);
+  margin-bottom: 6px;
+}
+.spec-delta {
+  color: var(--el-color-danger);
+  font-size: 12px;
 }
 .dish-grid {
   display: grid;
