@@ -1,0 +1,9 @@
+# pnpm 12 的依赖构建脚本白名单（键名 allowBuilds；pnpm 10+ 默认不执行依赖 postinstall，
+# 未声明的会被忽略，pnpm 12 起会直接报 ERR_PNPM_IGNORED_BUILDS，故必须逐项声明）
+allowBuilds:
+  '@parcel/watcher': true    # 原生文件监听，需要编译
+  esbuild: true              # 原生二进制，需要生成平台包
+  vue-demi: true             # 需要按 Vue 版本切换产物
+  core-js: false             # 仅 funding 提示，无需执行
+  core-js-pure: false
+  es5-ext: false
