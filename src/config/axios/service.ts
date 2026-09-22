@@ -16,6 +16,7 @@ import errorCode from './errorCode'
 import { resetRouter } from '@/router'
 import { deleteUserCache } from '@/hooks/web/useCache'
 import { ApiEncrypt } from '@/utils/encrypt'
+import { STORE_STAFF_NOT_BOUND_CODE, storeBindMissing } from '@/utils/storeBind'
 
 const tenantEnable = import.meta.env.VITE_APP_TENANT_ENABLE
 const { result_code, base_url, request_timeout } = config
@@ -210,6 +211,10 @@ service.interceptors.response.use(
       })
       return Promise.reject(new Error(msg))
     } else if (code !== 0 && code !== 200) {
+      // 门店端接口：当前账号未绑定门店 —— 先标记状态，布局层会展示引导条（详见 utils/storeBind）
+      if (code === STORE_STAFF_NOT_BOUND_CODE) {
+        storeBindMissing.value = true
+      }
       if (msg === '无效的刷新令牌') {
         // hard coding：忽略这个提示，直接登出
         console.log(msg)

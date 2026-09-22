@@ -2,6 +2,7 @@
 import { useTagsViewStore } from '@/store/modules/tagsView'
 import { useAppStore } from '@/store/modules/app'
 import { Footer } from '@/layout/components/Footer'
+import { storeBindMissing } from '@/utils/storeBind'
 
 defineOptions({ name: 'AppView' })
 
@@ -25,6 +26,16 @@ const reload = () => {
 // 为组件后代提供刷新方法
 provide('reload', reload)
 //endregion
+
+//region 门店端页面引导：账号未绑定门店时提示（由 axios 拦截器在收到 STORE_STAFF_NOT_BOUND 时置位）
+const route = useRoute()
+watch(
+  () => route.fullPath,
+  () => {
+    storeBindMissing.value = false // 换页即重置，由新页面按需重新置位
+  }
+)
+//endregion
 </script>
 
 <template>
@@ -37,6 +48,19 @@ provide('reload', reload)
       }
     ]"
   >
+    <el-alert
+      v-if="storeBindMissing"
+      type="warning"
+      :closable="false"
+      show-icon
+      class="mb-3"
+      title="当前账号未绑定门店，该页面属于门店端功能"
+    >
+      <div>
+        请使用「门店店员 / 门店收银」账号登录；或到
+        <b>餐饮管理 → 门店店员</b> 里把当前账号绑定到门店后再使用。
+      </div>
+    </el-alert>
     <router-view v-if="routerAlive">
       <template #default="{ Component, route }">
         <keep-alive :include="getCaches">
