@@ -4,13 +4,13 @@
       <el-descriptions :column="2" border>
         <el-descriptions-item label="订单号">{{ detail.orderNo }}</el-descriptions-item>
         <el-descriptions-item label="状态">
-          <dict-tag :type="DICT_TYPE.RESTAURANT_ORDER_STATUS" :value="detail.status" />
+          <el-tag :type="statusTag(detail.status)">{{ statusMap[detail.status] || detail.status }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="订单类型">
-          <dict-tag :type="DICT_TYPE.RESTAURANT_ORDER_TYPE" :value="detail.type" />
+          {{ typeMap[detail.type] || detail.type }}
         </el-descriptions-item>
         <el-descriptions-item label="支付方式">
-          <dict-tag :type="DICT_TYPE.RESTAURANT_PAY_TYPE" :value="detail.payType" />
+          {{ payTypeMap[detail.payType] || detail.payType }}
         </el-descriptions-item>
         <el-descriptions-item label="总金额(分)">{{ detail.totalPrice }}</el-descriptions-item>
         <el-descriptions-item label="实付(分)">{{ detail.payPrice }}</el-descriptions-item>
@@ -177,12 +177,30 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { DICT_TYPE } from '@/utils/dict'
 import { formatDate } from '@/utils/formatTime'
 import { ElMessageBox } from 'element-plus'
+import { useMessage } from '@/hooks/web/useMessage'
 import * as RestaurantApi from '@/api/restaurant'
 
 defineOptions({ name: 'RestaurantOrderDetail' })
+
+const message = useMessage() // 消息弹窗
+
+// 状态/类型/支付方式口径与 order/index.vue 保持一致（后端：OrderStatusEnum / OrderTypeEnum / setPayType）
+const statusMap = {
+  1: '待支付', 2: '已支付', 3: '制作中', 4: '已完成', 5: '已取消', 6: '退款中', 7: '已退款'
+}
+const typeMap = { 1: '堂食', 2: '自取', 3: '外卖', 4: '预约' }
+const payTypeMap = { 0: '未支付', 1: '微信支付', 2: '余额支付', 4: '现金支付' }
+
+function statusTag(status: number) {
+  if (status === 2) return 'success'
+  if (status === 3) return 'warning'
+  if (status === 4) return 'success'
+  if (status === 5) return 'info'
+  if (status === 6 || status === 7) return 'danger'
+  return 'warning'
+}
 
 const route = useRoute()
 const router = useRouter()
