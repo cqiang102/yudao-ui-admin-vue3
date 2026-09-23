@@ -117,10 +117,6 @@ function resetQuery() {
 function openCreate() {
   formRef.value.open('create')
 }
-function openGenerate() {
-  // 批量生成：可后续扩展为按门店+起始号+数量批量创建
-  message.info('批量生成功能待扩展')
-}
 function openEdit(row: any) {
   formRef.value.open('update', row.id)
 }

@@ -270,7 +270,7 @@ const dishQuery = ref({ name: undefined as string | undefined, pageNo: 1, pageSi
 // 规格/加料选择：有规格的菜品必须选（与后端 2026-09-20 起的口径一致）
 const specVisible = ref(false)
 const specDish = ref<any>(null)
-const pickedSpecId = ref<number | null>(null)
+const pickedSpecId = ref<number | undefined>(undefined)
 const pickedAddonIds = ref<number[]>([])
 
 const specGroups = computed(() => {
@@ -286,7 +286,7 @@ const specGroups = computed(() => {
 
 const openSpec = (row: any) => {
   specDish.value = row
-  pickedSpecId.value = row._specId ?? (row.specs?.length ? row.specs[0].id : null)
+  pickedSpecId.value = row._specId ?? (row.specs?.length ? row.specs[0].id : undefined)
   pickedAddonIds.value = [...(row.addonIds || [])]
   specVisible.value = true
 }

@@ -182,8 +182,9 @@ const form = reactive<any>({
 
 const sceneText = (scene: string) =>
   ({ pay_success: '支付成功', meal_ready: '出餐完成', refund_success: '退款成功' }[scene] || scene)
-const sceneTagType = (scene: string) =>
-  ({ pay_success: 'success', meal_ready: 'warning', refund_success: 'danger' }[scene] || 'info')
+const sceneTagType = (scene: string): 'primary' | 'success' | 'warning' | 'info' | 'danger' =>
+  (({ pay_success: 'success', meal_ready: 'warning', refund_success: 'danger' } as Record<string, string>)[scene] ||
+    'info') as 'primary' | 'success' | 'warning' | 'info' | 'danger'
 
 const getTemplateList = async () => {
   loading.value = true

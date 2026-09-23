@@ -198,7 +198,8 @@ const form = reactive<any>({
 })
 
 const orderText = (s: number) => ({ 0: '待核销', 1: '已核销', 2: '已取消' }[s] || '未知')
-const orderTagType = (s: number) => ({ 0: 'warning', 1: 'success', 2: 'info' }[s] || 'info')
+const orderTagType = (s: number): 'primary' | 'success' | 'warning' | 'info' | 'danger' =>
+  ({ 0: 'warning', 1: 'success', 2: 'info' }[s] || 'info') as 'primary' | 'success' | 'warning' | 'info' | 'danger'
 
 const getProductList = async () => {
   loading.value = true

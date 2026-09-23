@@ -99,8 +99,8 @@ const formData = ref({
   status: 1,
   soldOut: 0,
   description: '',
-  specs: [],
-  addons: []
+  specs: [] as any[],
+  addons: [] as any[]
 })
 const formRules = reactive({
   categoryId: [{ required: true, message: '请选择分类', trigger: 'change' }],

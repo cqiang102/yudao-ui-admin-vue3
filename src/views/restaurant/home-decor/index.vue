@@ -34,8 +34,8 @@
       <el-table-column label="编号" prop="id" width="70" />
       <el-table-column label="类型" width="120">
         <template #default="{ row }">
-          <el-tag :type="['success', 'primary', 'warning'][row.type - 1]">
-            {{ ['轮播 banner', '金刚区入口', '推荐菜品位'][row.type - 1] || row.type }}
+          <el-tag :type="TYPE_TAGS[row.type - 1]">
+            {{ TYPE_TEXTS[row.type - 1] || row.type }}
           </el-tag>
         </template>
       </el-table-column>
@@ -113,6 +113,10 @@ import * as RestaurantApi from '@/api/restaurant'
 defineOptions({ name: 'RestaurantHomeDecor' })
 
 const message = useMessage()
+
+// el-tag 的 type 需要字面量联合类型；内联数组下标会被推成 string（vue-tsc 报 TS2322），故提到这里 as const
+const TYPE_TAGS = ['success', 'primary', 'warning'] as const
+const TYPE_TEXTS = ['轮播 banner', '金刚区入口', '推荐菜品位']
 
 const loading = ref(false)
 const list = ref<any[]>([])

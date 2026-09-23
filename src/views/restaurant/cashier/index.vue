@@ -232,7 +232,7 @@ const totalPrice = computed(() =>
 // 后端 2026-09-20 起：有规格的菜品必须选规格，否则下单报 2000006030
 const specVisible = ref(false)
 const specDish = ref<any>(null)
-const pickedSpecId = ref<number | null>(null)
+const pickedSpecId = ref<number | undefined>(undefined)
 const pickedAddonIds = ref<number[]>([])
 
 const specGroups = computed(() => {
@@ -261,7 +261,7 @@ const specLinePrice = computed(() => {
 
 const openSpec = (dish: any) => {
   specDish.value = dish
-  pickedSpecId.value = dish.specs?.length ? dish.specs[0].id : null
+  pickedSpecId.value = dish.specs?.length ? dish.specs[0].id : undefined
   pickedAddonIds.value = []
   specVisible.value = true
 }
@@ -288,7 +288,7 @@ const addToCart = (dish: any) => {
   pushCart(dish, null, [])
 }
 
-const pushCart = (dish: any, specId: number | null, addonIds: number[]) => {
+const pushCart = (dish: any, specId: number | null | undefined, addonIds: number[]) => {
   const list = addonIds || []
   const spec = specId != null ? dish.specs?.find((s: any) => s.id === specId) : null
   const addonNames = list

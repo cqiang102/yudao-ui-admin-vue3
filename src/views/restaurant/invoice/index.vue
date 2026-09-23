@@ -39,8 +39,8 @@
       <el-table-column label="税号" prop="taxNo" min-width="140" show-overflow-tooltip />
       <el-table-column label="状态" width="90">
         <template #default="{ row }">
-          <el-tag :type="['warning', 'success', 'danger'][row.status]">
-            {{ ['申请中', '已开票', '已驳回'][row.status] }}
+          <el-tag :type="STATUS_TAGS[row.status]">
+            {{ STATUS_TEXTS[row.status] }}
           </el-tag>
         </template>
       </el-table-column>
@@ -83,6 +83,10 @@ import * as RestaurantApi from '@/api/restaurant'
 defineOptions({ name: 'RestaurantInvoice' })
 
 const message = useMessage()
+
+// el-tag 的 type 需要字面量联合类型；内联数组下标会被推成 string（vue-tsc 报 TS2322），故提到这里 as const
+const STATUS_TAGS = ['warning', 'success', 'danger'] as const
+const STATUS_TEXTS = ['申请中', '已开票', '已驳回']
 
 const loading = ref(false)
 const saving = ref(false)

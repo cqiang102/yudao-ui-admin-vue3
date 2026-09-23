@@ -58,8 +58,8 @@
           </el-table-column>
           <el-table-column label="状态" width="100">
             <template #default="{ row }">
-              <el-tag :type="['warning', 'success', 'danger'][row.status]">
-                {{ ['待审核', '已打款', '已驳回'][row.status] }}
+              <el-tag :type="STATUS_TAGS[row.status]">
+                {{ STATUS_TEXTS[row.status] }}
               </el-tag>
             </template>
           </el-table-column>
@@ -207,6 +207,10 @@ import * as RestaurantApi from '@/api/restaurant'
 defineOptions({ name: 'RestaurantWithdraw' })
 
 const message = useMessage()
+
+// el-tag 的 type 需要字面量联合类型；内联数组下标会被推成 string（vue-tsc 报 TS2322），故提到这里 as const
+const STATUS_TAGS = ['warning', 'success', 'danger'] as const
+const STATUS_TEXTS = ['待审核', '已打款', '已驳回']
 
 const loading = ref(false)
 const accountLoading = ref(false)
