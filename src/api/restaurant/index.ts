@@ -502,3 +502,22 @@ export const auditInvoice = async (data: any) => {
 export const deleteInvoice = async (id: number) => {
   return await request.delete({ url: `/store/invoice/delete?id=` + id })
 }
+
+// ========== 工单（P-07 平台消息·工单） ==========
+// 商户端（/store/ticket）：门店归属由后端按登录店员绑定的门店注入，前端不传 storeId
+export const createTicket = async (data: any) => {
+  return await request.post({ url: `/store/ticket/create`, data })
+}
+export const getMyTicketPage = async (params: any) => {
+  return await request.get({ url: `/store/ticket/page`, params })
+}
+// 平台端（/restaurant/ticket）：可跨门店查看与处理
+export const getTicketPage = async (params: any) => {
+  return await request.get({ url: `/restaurant/ticket/page`, params })
+}
+export const replyTicket = async (data: any) => {
+  return await request.put({ url: `/restaurant/ticket/reply`, data })
+}
+export const closeTicket = async (id: number) => {
+  return await request.put({ url: `/restaurant/ticket/close?id=` + id })
+}
