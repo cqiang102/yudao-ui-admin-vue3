@@ -43,7 +43,7 @@
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="创建时间" prop="createTime" width="170" />
+          <el-table-column label="创建时间" prop="createTime" width="170" :formatter="dateFormatter" />
           <el-table-column label="操作" width="160" fixed="right">
             <template #default="{ row }">
               <el-button
@@ -112,8 +112,8 @@
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="支付时间" prop="paidTime" width="170" />
-          <el-table-column label="创建时间" prop="createTime" width="170" />
+          <el-table-column label="支付时间" prop="paidTime" width="170" :formatter="dateFormatter" />
+          <el-table-column label="创建时间" prop="createTime" width="170" :formatter="dateFormatter" />
         </el-table>
         <el-pagination
           v-model:current-page="orderPageNo"
@@ -176,6 +176,7 @@ import {
   getCardOrderPage
 } from '@/api/restaurant'
 import type { FormInstance, FormRules } from 'element-plus'
+import { dateFormatter } from '@/utils/formatTime'
 
 const message = useMessage()
 

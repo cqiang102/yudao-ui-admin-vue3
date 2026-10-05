@@ -35,7 +35,7 @@
           <span v-else class="text-gray-400">-</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="创建时间" prop="createTime" min-width="160" />
+      <el-table-column align="center" label="创建时间" prop="createTime" min-width="160" :formatter="dateFormatter" />
       <el-table-column align="center" label="操作" width="110" fixed="right">
         <template #default="{ row }">
           <el-button
@@ -80,6 +80,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { getMemberPage, updateMemberTags } from '@/api/restaurant'
+import { dateFormatter } from '@/utils/formatTime'
 
 defineOptions({ name: 'RestaurantMember' })
 

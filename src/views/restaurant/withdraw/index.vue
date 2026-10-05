@@ -67,7 +67,7 @@
           <el-table-column label="申请备注" prop="applyRemark" min-width="120" show-overflow-tooltip />
           <el-table-column label="驳回原因" prop="rejectReason" min-width="120" show-overflow-tooltip />
           <el-table-column label="审核人" prop="auditUser" width="90" />
-          <el-table-column label="申请时间" prop="createTime" width="170" />
+          <el-table-column label="申请时间" prop="createTime" width="170" :formatter="dateFormatter" />
           <el-table-column label="操作" width="120" fixed="right">
             <template #default="{ row }">
               <el-button
@@ -203,6 +203,7 @@
 
 <script lang="ts" setup>
 import * as RestaurantApi from '@/api/restaurant'
+import { dateFormatter } from '@/utils/formatTime'
 
 defineOptions({ name: 'RestaurantWithdraw' })
 

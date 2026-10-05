@@ -38,7 +38,7 @@
           </el-table-column>
           <el-table-column label="运费(元)" prop="fee" width="90" />
           <el-table-column label="异常/取消原因" prop="errorMsg" min-width="140" show-overflow-tooltip />
-          <el-table-column label="最后回调" prop="callbackTime" width="170" />
+          <el-table-column label="最后回调" prop="callbackTime" width="170" :formatter="dateFormatter" />
           <el-table-column label="操作" width="140" fixed="right">
             <template #default="{ row }">
               <el-button
@@ -112,6 +112,7 @@
 
 <script lang="ts" setup>
 import * as DeliveryApi from '@/api/restaurant'
+import { dateFormatter } from '@/utils/formatTime'
 
 defineOptions({ name: 'RestaurantDelivery' })
 

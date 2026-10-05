@@ -48,7 +48,7 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="创建时间" prop="createTime" min-width="160" />
+      <el-table-column align="center" label="创建时间" prop="createTime" min-width="160" :formatter="dateFormatter" />
       <el-table-column align="center" label="操作" min-width="150" fixed="right">
         <template #default="scope">
           <el-button v-hasPermi="['restaurant:member-level:update']" link type="primary" @click="openEdit(scope.row)">编辑</el-button>
@@ -69,6 +69,7 @@
 import { ref } from 'vue'
 import { getMemberLevelPage, deleteMemberLevel } from '@/api/restaurant'
 import MemberLevelForm from './MemberLevelForm.vue'
+import { dateFormatter } from '@/utils/formatTime'
 
 const loading = ref(false)
 const list = ref<any[]>([])

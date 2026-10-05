@@ -29,7 +29,7 @@
       <el-table-column align="center" label="门店名称" prop="name" min-width="140" />
       <el-table-column align="center" label="联系电话" prop="phone" min-width="120" />
       <el-table-column align="center" label="地址" prop="address" min-width="200" />
-      <el-table-column align="center" label="创建时间" prop="createTime" min-width="160" />
+      <el-table-column align="center" label="创建时间" prop="createTime" min-width="160" :formatter="dateFormatter" />
       <el-table-column align="center" label="操作" min-width="160" fixed="right">
         <template #default="scope">
           <el-button v-hasPermi="['restaurant:store:update']" link type="primary" @click="openEdit(scope.row)">编辑</el-button>
@@ -50,6 +50,7 @@
 import { ref } from 'vue'
 import { getStorePage, deleteStore } from '@/api/restaurant'
 import StoreForm from './StoreForm.vue'
+import { dateFormatter } from '@/utils/formatTime'
 
 const loading = ref(false)
 const list = ref<any[]>([])

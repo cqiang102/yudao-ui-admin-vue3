@@ -113,7 +113,7 @@
               <el-tag :type="orderTagType(row.status)">{{ orderText(row.status) }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="下单时间" prop="createTime" width="170" />
+          <el-table-column label="下单时间" prop="createTime" width="170" :formatter="dateFormatter" />
         </el-table>
         <Pagination
           v-model:page="orderQuery.pageNo"
@@ -166,6 +166,7 @@
 
 <script lang="ts" setup>
 import * as PointShopApi from '@/api/restaurant'
+import { dateFormatter } from '@/utils/formatTime'
 
 defineOptions({ name: 'RestaurantPointShop' })
 

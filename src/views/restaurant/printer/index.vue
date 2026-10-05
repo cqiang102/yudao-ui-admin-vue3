@@ -42,7 +42,7 @@
             </template>
           </el-table-column>
           <el-table-column label="排序" prop="sort" width="80" />
-          <el-table-column label="添加时间" prop="createTime" width="170" />
+          <el-table-column label="添加时间" prop="createTime" width="170" :formatter="dateFormatter" />
           <el-table-column label="操作" width="150" fixed="right">
             <template #default="{ row }">
               <el-button
@@ -105,7 +105,7 @@
             <template #default="{ row }">{{ row.errorMsg || '-' }}</template>
           </el-table-column>
           <el-table-column label="重试次数" prop="retryCount" width="90" />
-          <el-table-column label="发送时间" prop="sendTime" width="170" />
+          <el-table-column label="发送时间" prop="sendTime" width="170" :formatter="dateFormatter" />
           <el-table-column label="操作" width="100" fixed="right">
             <template #default="{ row }">
               <el-button
@@ -175,6 +175,7 @@ import {
   retryPrintTask
 } from '@/api/restaurant'
 
+import { dateFormatter } from '@/utils/formatTime'
 const message = useMessage()
 
 // ---------- 打印机列表 ----------

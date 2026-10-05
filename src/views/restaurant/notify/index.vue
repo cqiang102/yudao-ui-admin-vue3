@@ -97,7 +97,7 @@
           </el-table-column>
           <el-table-column label="内容" prop="content" min-width="160" show-overflow-tooltip />
           <el-table-column label="失败原因" prop="errorMsg" min-width="140" show-overflow-tooltip />
-          <el-table-column label="发送时间" prop="sendTime" width="170" />
+          <el-table-column label="发送时间" prop="sendTime" width="170" :formatter="dateFormatter" />
         </el-table>
         <Pagination
           v-model:page="recordQuery.pageNo"
@@ -149,6 +149,7 @@
 
 <script lang="ts" setup>
 import * as NotifyApi from '@/api/restaurant'
+import { dateFormatter } from '@/utils/formatTime'
 
 defineOptions({ name: 'RestaurantNotify' })
 

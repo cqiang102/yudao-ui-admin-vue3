@@ -39,7 +39,7 @@
         </template>
       </el-table-column>
       <el-table-column label="备注" prop="remark" min-width="160" show-overflow-tooltip />
-      <el-table-column label="创建时间" prop="createTime" width="170" />
+      <el-table-column label="创建时间" prop="createTime" width="170" :formatter="dateFormatter" />
       <el-table-column label="操作" width="160" fixed="right">
         <template #default="{ row }">
           <el-button v-hasPermi="['restaurant:dish-category:update']" link type="primary" @click="openEdit(row.id)">编辑</el-button>
@@ -66,6 +66,7 @@
 import { reactive, ref, onMounted } from 'vue'
 import { getDishCategoryPage, deleteDishCategory } from '@/api/restaurant'
 import DishCategoryForm from './DishCategoryForm.vue'
+import { dateFormatter } from '@/utils/formatTime'
 
 const message = useMessage()
 

@@ -63,7 +63,7 @@
       <el-table-column align="center" label="实付(元)" min-width="100">
         <template #default="scope">{{ (scope.row.payPrice / 100).toFixed(2) }}</template>
       </el-table-column>
-      <el-table-column align="center" label="创建时间" prop="createTime" min-width="160" />
+      <el-table-column align="center" label="创建时间" prop="createTime" min-width="160" :formatter="dateFormatter" />
       <el-table-column align="center" label="操作" min-width="240" fixed="right">
         <template #default="scope">
           <el-button link type="primary" @click="openDetail(scope.row)">详情</el-button>
@@ -124,6 +124,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { getOrderPage, cancelOrder, acceptOrder, completeOrder, callOrder, verifyOrder } from '@/api/restaurant'
+import { dateFormatter } from '@/utils/formatTime'
 
 const statusMap = {
   1: '待支付', 2: '已支付', 3: '制作中', 4: '已完成', 5: '已取消', 6: '退款中', 7: '已退款'

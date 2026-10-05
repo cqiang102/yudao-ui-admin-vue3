@@ -45,7 +45,7 @@
         </template>
       </el-table-column>
       <el-table-column label="驳回原因" prop="rejectReason" min-width="120" show-overflow-tooltip />
-      <el-table-column label="申请时间" prop="createTime" width="170" />
+      <el-table-column label="申请时间" prop="createTime" width="170" :formatter="dateFormatter" />
       <el-table-column label="操作" width="150" fixed="right">
         <template #default="{ row }">
           <template v-if="row.status === 0">
@@ -79,6 +79,7 @@
 
 <script lang="ts" setup>
 import * as RestaurantApi from '@/api/restaurant'
+import { dateFormatter } from '@/utils/formatTime'
 
 defineOptions({ name: 'RestaurantInvoice' })
 

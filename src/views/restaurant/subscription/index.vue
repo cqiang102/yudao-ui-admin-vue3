@@ -12,12 +12,12 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="开始时间" prop="startTime" width="170" />
-      <el-table-column label="过期时间" prop="expireTime" width="170" />
+      <el-table-column label="开始时间" prop="startTime" width="170" :formatter="dateFormatter" />
+      <el-table-column label="过期时间" prop="expireTime" width="170" :formatter="dateFormatter" />
       <el-table-column label="实付金额" width="120">
         <template #default="{ row }">{{ (row.amount || 0) / 100 }} 元</template>
       </el-table-column>
-      <el-table-column label="创建时间" prop="createTime" width="170" />
+      <el-table-column label="创建时间" prop="createTime" width="170" :formatter="dateFormatter" />
     </el-table>
     <el-pagination
       v-model:current-page="pageNo"
@@ -58,6 +58,7 @@
 import { reactive, ref, onMounted } from 'vue'
 import { getSubscriptionPage, openSubscription, getPackagePage } from '@/api/restaurant'
 import type { FormInstance, FormRules } from 'element-plus'
+import { dateFormatter } from '@/utils/formatTime'
 
 const message = useMessage()
 

@@ -37,7 +37,7 @@
           <span v-else class="text-gray-400">（暂无）</span>
         </template>
       </el-table-column>
-      <el-table-column label="提交时间" prop="createTime" width="170" />
+      <el-table-column label="提交时间" prop="createTime" width="170" :formatter="dateFormatter" />
       <el-table-column label="操作" width="90" fixed="right">
         <template #default="{ row }">
           <el-button link type="primary" @click="onView(row)">查看</el-button>
@@ -95,6 +95,7 @@
 <script lang="ts" setup>
 import * as RestaurantApi from '@/api/restaurant'
 import type { FormInstance } from 'element-plus'
+import { dateFormatter } from '@/utils/formatTime'
 
 // 商户端 - 我的工单（P-07）
 // 门店归属由后端按登录店员绑定的门店注入（StoreAuthService），前端不传 storeId

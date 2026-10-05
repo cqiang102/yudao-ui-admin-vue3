@@ -45,7 +45,7 @@
         </template>
       </el-table-column>
       <el-table-column label="平台回复" prop="reply" min-width="200" show-overflow-tooltip />
-      <el-table-column label="提交时间" prop="createTime" width="170" />
+      <el-table-column label="提交时间" prop="createTime" width="170" :formatter="dateFormatter" />
       <el-table-column label="操作" width="170" fixed="right">
         <template #default="{ row }">
           <el-button link type="primary" @click="onView(row)">查看</el-button>
@@ -110,6 +110,7 @@
 
 <script lang="ts" setup>
 import * as RestaurantApi from '@/api/restaurant'
+import { dateFormatter } from '@/utils/formatTime'
 
 // 平台端 - 工单管理（P-07）
 defineOptions({ name: 'RestaurantTicket' })

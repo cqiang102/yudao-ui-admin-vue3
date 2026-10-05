@@ -42,7 +42,7 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="发布时间" prop="createTime" width="170" />
+      <el-table-column label="发布时间" prop="createTime" width="170" :formatter="dateFormatter" />
       <el-table-column label="操作" width="150" fixed="right">
         <template #default="{ row }">
           <el-button v-hasPermi="['restaurant:notice:update']" link type="primary" @click="openForm(row)">
@@ -86,6 +86,7 @@
 
 <script lang="ts" setup>
 import * as RestaurantApi from '@/api/restaurant'
+import { dateFormatter } from '@/utils/formatTime'
 
 defineOptions({ name: 'RestaurantNoticePub' })
 
